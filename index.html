@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial scale=1.0">
+		<title>Current Time - time.zilxen.eu </title>
+		<style>
+		@import url('https://fonts.googleapis.com/css?family=Lexend+Deca&display=swap');
+		body{
+		  font-family: 'Lexend Deca', sans-serif;
+		  text-align: center;
+		}
+		.time {
+		  font-size: 96px;
+		}
+		.date {
+		  font-size: 36px;
+		}
+		.time-zone{
+		  font-size: 16px;
+		}
+		</style>
+	</head>
+	<body>
+		<!-- time zone -->
+		<div class="time-zone">
+			<span id="time-zone"></span>
+		</div>
+		<!-- time -->
+		<div class="time" id="time">
+		  <span id="hour"></span>:<span id="minute"></span>:<span id="second"></span>
+		</div>
+		<!-- date -->
+		<div class="date" id="date">
+		  <span id="month"></span> <span id="day"></span>, <span id="year"></span>
+		</div>
+
+
+		<script>
+			function updateTime() {
+			  const now = new Date();
+			  const timeZoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+			  const humanReadableTime = now.toLocaleString();
+			  const day = now.toLocaleDateString(undefined, { day: 'numeric' });
+			  const daySuffix = getDaySuffix(day);
+			  const month = now.toLocaleDateString(undefined, { month: 'long' });
+			  const year = now.toLocaleDateString(undefined, { year: 'numeric' });
+			  const hour = now.getHours().toString().padStart(2, '0').replace(/^0+/, '');
+			  const minute = now.getMinutes().toString().padStart(2, '0');
+			  const second = now.getSeconds().toString().padStart(2, '0');
+			  document.getElementById('time-zone').textContent = timeZoneName;
+			  document.getElementById('day').textContent = `${day}${daySuffix}`;
+			  document.getElementById('month').textContent = month;
+			  document.getElementById('year').textContent = year;
+			  document.getElementById('hour').textContent = hour;
+			  document.getElementById('minute').textContent = minute;
+			  document.getElementById('second').textContent = second;
+			}
+
+			function getDaySuffix(day) {
+			  if (day >= 11 && day <= 13) {
+				return 'th';
+			  }
+			  switch (day % 10) {
+				case 1: return 'st';
+				case 2: return 'nd';
+				case 3: return 'rd';
+				default: return 'th';
+			  }
+			}
+
+			setInterval(updateTime, 10);
+		</script>
+	</body>
+</html>
